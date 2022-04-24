@@ -4,4 +4,4 @@
 
 
 
-![rainpage](https://gitee.com/yunhai0644/imghub/raw/master/img/rainpage.gif)
+![rainpage](./rainpage.gif)
