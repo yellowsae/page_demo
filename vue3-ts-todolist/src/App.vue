@@ -1,14 +1,20 @@
 <script lang='ts' setup>
+// setup vue的语法糖
+
+// 引入 ref  computed 计算属性
 import { ref, computed } from "vue";
 
+// todolist 配置项的接口
 interface TodoItem {
   // 定义 todo 事项类型
   msg: string; // 要做的事
   done: boolean; // 是否完成
 }
 
+// 双向绑定 数据项
 const todoMsg = ref<string>(""); // 用一个ref来定义 todo 事项，并双向绑定
 
+// 定义初始的的数据
 const lists = ref<TodoItem[]>([
   // 定义 todo 列表，初始化一些数据
   { msg: "吃饭", done: true },
@@ -16,8 +22,10 @@ const lists = ref<TodoItem[]>([
   { msg: "打游戏", done: false },
 ]);
 
+//
 const hasDone = computed(() => lists.value.filter((item) => item.done).length); // 已经做了的事项列表
 
+// 是否全选的， 绑定的事件
 const isAllDone = computed<boolean>({
   // 所有的事项是否完成，双向绑定到全选按钮
   get() {
@@ -32,6 +40,9 @@ const isAllDone = computed<boolean>({
   },
 });
 
+
+
+// 添加数据的方法
 const add = () => {
   // 新增事项
   if (todoMsg.value) {
@@ -44,36 +55,37 @@ const add = () => {
   }
 };
 
+// 删除方法， 根据数组的下标
 const deleteItem = (index: number) => {
   // 删除事项
   lists.value.splice(index, 1);
 };
 
+// 清除已完成的 选项
 const clearHasDone = () => {
   // 清理所有已完成的事项
-  lists.value = lists.value.filter((item) => !item.done);
+  lists.value = lists.value.filter(item => !item.done)
 };
+
 </script>
 
 <template>
-  <div>
-    <input type="text" v-model="todoMsg" />
-    <button @click="add">添加</button>
-    <button @click="clearHasDone">清理</button>
-    <div v-if="lists.length">
-      <div v-for="(item, index) in lists" :key="item.msg">
-        <input type="checkbox" v-model="item.done" />
-        <span :class="{ done: item.done }">{{ item.msg }}</span>
-        <span @click="deleteItem(index)">❎</span>
-      </div>
-      <div>
-        <span>全选</span>
-        <input type="checkbox" v-model="isAllDone" />
-        <span>{{ hasDone }} / {{ lists.length }}</span>
-      </div>
+  <input type="text" v-model="todoMsg" />
+  <button @click="add">添加</button>
+  <button @click="clearHasDone">清理</button>
+  <div v-if="lists.length">
+    <div v-for="(item, index) in lists" :key="item.msg">
+      <input type="checkbox" v-model="item.done" />
+      <span :class="{ done: item.done }">{{ item.msg }}</span>
+      <span @click="deleteItem(index)">❎</span>
     </div>
-    <div v-else>暂无数据</div>
+    <div>
+      <span>全选</span>
+      <input type="checkbox" v-model="isAllDone" />
+      <span>{{ hasDone }} / {{ lists.length }}</span>
+    </div>
   </div>
+  <div v-else>暂无数据</div>
 </template>
 
 
